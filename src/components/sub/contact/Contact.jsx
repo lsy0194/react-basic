@@ -1,11 +1,12 @@
 import Layout from '../../common/layout/Layout';
 import './Contact.scss';
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useState } from 'react';
 
 export default function Contact() {
 	const map = useRef(null);
-	//현재 카카오 객체를 cdn으로 가져오고 있 기떄문에
-	//리액트 컴포넌트안쪽에서 window객체로부터 kakao객체를 비구조할당을 이용해서 수동으로 꺼내옴
+	const instance = useRef(null);
+	const [Traffic, setTraffic] = useState(false);
+
 	const { kakao } = window;
 
 	const info = {
@@ -22,14 +23,27 @@ export default function Contact() {
 
 	useEffect(() => {
 		//컴포넌트 마운트 되자마자 지도인스턴스 생성
-		const instance = new kakao.maps.Map(map.current, {
+		instance.current = new kakao.maps.Map(map.current, {
 			center: info.latlng,
 			level: 1,
 		});
-		marker.setMap(instance);
+
+		marker.setMap(instance.current);
 	}, []);
+
+	useEffect(() => {
+		Traffic
+			? instance.current.addOverlayMapTypeId(kakao.maps.MapTypeId.TRAFFIC)
+			: instance.current.removeOverlayMapTypeId(kakao.maps.MapTypeId.TRAFFIC);
+	}, [Traffic]);
+
 	return (
 		<Layout title={'Contact'}>
+			{/* <button onClick={() => setTraffic(true)}>주변 교통정보 보기</button>
+			<button onClick={() => setTraffic(false)}>주변 교통정보 끄기</button> */}
+			<button onClick={() => setTraffic(!Traffic)}>
+				{Traffic ? '교통정보 끄기' : '교통정보 켜기'}
+			</button>
 			<div className='map' ref={map}></div>
 		</Layout>
 	);
