@@ -27,8 +27,9 @@ export default function Contact() {
 			center: info.latlng,
 			level: 1,
 		});
-
 		marker.setMap(instance.current);
+		const mapTypeControl = new kakao.maps.MapTypeControl();
+		instance.current.addControl(mapTypeControl, kakao.maps.ControlPosition.BOTTOMLEFT);
 	}, []);
 
 	useEffect(() => {
