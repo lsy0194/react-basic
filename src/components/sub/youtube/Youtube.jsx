@@ -1,21 +1,19 @@
 import Layout from '../../common/layout/Layout';
 import Modal from '../../common/modal/Modal';
 import './Youtube.scss';
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 /*
 	리액트는 단방향 데이터 바인딩
-	- 부모에서 자식으로 데이터를 전달가능하지만 자식에서 부모로는 데이터를 전달불가
-	- props전달, children전달
-
-	리액트에서 자식 컴포넌트에선느 직접적으로 부모 컴포넌트의 state값이 변경이 불가
-	- 해결방법 부모의 state변경함수를 자식컴포넌트로 전달
-	- 자식 컴포넌트에서는 전달받은 state변경함수로 간접적으로 부모 state값 변경가능
-
+	- 부모에서 자식으로 데이터 전달가능하지만 자식에서 부모로는 데이터를 전달 불가
+	- props전달, children 전달
+	
+	리액트에서 자식 컴포넌트에서는 직접적으로 부모 컴포넌트의 state값 변경이 불가
+	- 해결방법 부모의 state변경함수를 자식 컴포넌트로 전달
+	- 자식컴포넌트에서는 전달받은 state변경함수로 간접적으로 부모 state값 변경가능
 	useRef로 jsx는 참조 객체에 담을 수 있음
-	컴포넌트를 useRef를 통한 참조객체 
 */
+
 export default function Youtube() {
-	const refEl = useRef(null);
 	const [Youtube, setYoutube] = useState([]);
 	const [IsModal, setIsModal] = useState(false);
 
@@ -41,22 +39,16 @@ export default function Youtube() {
 				{Youtube.map((data, idx) => {
 					return (
 						<article key={idx}>
-							<h2
-								onClick={() => {
-									console.log(refEl.current);
-								}}
-							>
-								{data.snippet.title}
-							</h2>
-							<p ref={refEl}>{data.snippet.description}</p>
-							<div className='pic' onClick={() => refEl.current.open()}>
+							<h2>{data.snippet.title}</h2>
+							<p>{data.snippet.description}</p>
+							<div className='pic' onClick={() => setIsModal(true)}>
 								<img src={data.snippet.thumbnails.standard.url} alt={data.title} />
 							</div>
 						</article>
 					);
 				})}
 			</Layout>
-			<Modal setIsModal={setIsModal} ref={refEl}></Modal>
+			{IsModal && <Modal setIsModal={setIsModal}></Modal>}
 		</>
 	);
 }
