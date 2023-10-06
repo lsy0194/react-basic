@@ -9,6 +9,7 @@ export default function Contact() {
 	const [Traffic, setTraffic] = useState(false);
 	const [Index, setIndex] = useState(0);
 	const { kakao } = window;
+	const [IsMap, setIsMap] = useState(true);
 
 	const info = useRef([
 		{
@@ -63,9 +64,13 @@ export default function Contact() {
 		window.addEventListener('resize', setCenter);
 		//로드뷰관련코드
 
-		new kakao.maps.RoadviewClient().getNearestPanoId(info.current[Index].latlng, 50, (panoId) => {
-			new kakao.maps.Roadview(view.current).setPanoId(panoId, info.current[Index].latlng); //panoId와 중심좌표를 통해 로드뷰 실행
-		});
+		new kakao.maps.RoadviewClient().getNearestPanoId(
+			info.current[Index].latlng,
+			50, //해당 지도의 위치값에서 반경 100미터 안에 제일 가까운 도로 기준으로 로드뷰화면 생성
+			(panoId) => {
+				new kakao.maps.Roadview(view.current).setPanoId(panoId, info.current[Index].latlng); //panoId와 중심좌표를 통해 로드뷰 실행
+			}
+		);
 	}, [Index]);
 
 	useEffect(() => {
@@ -81,9 +86,18 @@ export default function Contact() {
 			<button onClick={() => setTraffic(!Traffic)}>
 				{Traffic ? '교통정보 끄기' : '교통정보 켜기'}
 			</button>
-
-			<div className='map' ref={map}></div>
-			<div className='view' ref={view}></div>
+			<button onClick={setCenter}>지도위치초기화</button>
+			<button
+				onClick={() => {
+					setIsMap(!IsMap);
+				}}
+			>
+				{IsMap ? '지도보기' : '로드뷰보기'}
+			</button>
+			<div className='container'>
+				<div className={`view  ${IsMap ? '' : 'on'}`} ref={view}></div>
+				<div className={`map  ${IsMap ? 'on' : ''}`} ref={map}></div>
+			</div>
 			<ul>
 				{info.current.map((el, idx) => (
 					<li className={Index === idx ? 'on' : ''} key={idx} onClick={() => setIndex(idx)}>
