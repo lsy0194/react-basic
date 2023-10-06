@@ -61,14 +61,10 @@ export default function Contact() {
 		const mapTypeControl = new kakao.maps.MapTypeControl();
 		instance.current.addControl(mapTypeControl, kakao.maps.ControlPosition.BOTTOMLEFT);
 		window.addEventListener('resize', setCenter);
+		//로드뷰관련코드
 
-		const roadviewContainer = view.current; //로드뷰를 표시할 div
-		const roadview = new kakao.maps.Roadview(roadviewContainer); //로드뷰 객체
-		const roadviewClient = new kakao.maps.RoadviewClient(); //좌표로부터 로드뷰 파노ID를 가져올 로드뷰 helper객체
-		const position = info.current[Index].latlng;
-
-		roadviewClient.getNearestPanoId(position, 50, (panoId) => {
-			roadview.setPanoId(panoId, position); //panoId와 중심좌표를 통해 로드뷰 실행
+		new kakao.maps.RoadviewClient().getNearestPanoId(info.current[Index].latlng, 50, (panoId) => {
+			new kakao.maps.Roadview(view.current).setPanoId(panoId, info.current[Index].latlng); //panoId와 중심좌표를 통해 로드뷰 실행
 		});
 	}, [Index]);
 
