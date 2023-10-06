@@ -1,8 +1,10 @@
 import Layout from '../../common/layout/Layout';
 import './Contact.scss';
 import { useRef, useEffect, useState } from 'react';
+import emailjs from '@emailjs/browser';
 
 export default function Contact() {
+	const form = useRef();
 	const map = useRef(null);
 	const instance = useRef(null);
 	const view = useRef(null);
@@ -79,39 +81,65 @@ export default function Contact() {
 			: instance.current.removeOverlayMapTypeId(kakao.maps.MapTypeId.TRAFFIC);
 	}, [Traffic]);
 
+	const sendEmail = (e) => {
+		e.preventDefault();
+
+		emailjs.sendForm('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', form.current, 'YOUR_PUBLIC_KEY').then(
+			(result) => {
+				alert('문의내용이 메일로 발송되었습니다.');
+			},
+			(error) => {
+				alert('문의내용 전송에 실패했습니다.');
+			}
+		);
+	};
+
 	return (
 		<Layout title={'Contact'}>
-			{/* <button onClick={() => setTraffic(true)}>주변 교통정보 보기</button>
-			<button onClick={() => setTraffic(false)}>주변 교통정보 끄기</button> */}
-			<button onClick={() => setTraffic(!Traffic)}>
-				{Traffic ? '교통정보 끄기' : '교통정보 켜기'}
-			</button>
-			<button onClick={setCenter}>지도위치초기화</button>
-			<button
-				onClick={() => {
-					setIsMap(!IsMap);
-				}}
-			>
-				{IsMap ? '지도보기' : '로드뷰보기'}
-			</button>
-			<div className='container'>
-				<div className={`view  ${IsMap ? '' : 'on'}`} ref={view}></div>
-				<div className={`map  ${IsMap ? 'on' : ''}`} ref={map}></div>
+			<div className='mailbox'>
+				<form ref={form} onSubmit={sendEmail}>
+					<label>Name</label>
+					<input type='text' name='user_name' />
+					<label>Email</label>
+					<input type='email' name='user_email' />
+					<label>Message</label>
+					<textarea name='message' />
+					<input type='submit' value='Send' />
+				</form>
 			</div>
-			<ul>
-				{info.current.map((el, idx) => (
-					<li
-						className={Index === idx ? 'on' : ''}
-						key={idx}
-						onClick={() => {
-							setIndex(idx);
-							setIsMap(true);
-						}}
-					>
-						{el.title}
-					</li>
-				))}
-			</ul>
+			<div className='mapbox'>
+				{/* <button onClick={() => setTraffic(true)}>주변 교통정보 보기</button>
+			<button onClick={() => setTraffic(false)}>주변 교통정보 끄기</button> */}
+				<button onClick={() => setTraffic(!Traffic)}>
+					{Traffic ? '교통정보 끄기' : '교통정보 켜기'}
+				</button>
+				<button onClick={setCenter}>지도위치초기화</button>
+				<button
+					onClick={() => {
+						setIsMap(!IsMap);
+					}}
+				>
+					{IsMap ? '지도보기' : '로드뷰보기'}
+				</button>
+				<div className='container'>
+					<div className={`view  ${IsMap ? '' : 'on'}`} ref={view}></div>
+					<div className={`map  ${IsMap ? 'on' : ''}`} ref={map}></div>
+				</div>
+				<ul>
+					{info.current.map((el, idx) => (
+						<li
+							className={Index === idx ? 'on' : ''}
+							key={idx}
+							onClick={() => {
+								setIndex(idx);
+								setIsMap(true);
+							}}
+						>
+							{el.title}
+						</li>
+					))}
+				</ul>
+			</div>
 		</Layout>
 	);
 }
