@@ -5,6 +5,7 @@ import { useRef, useEffect, useState } from 'react';
 export default function Contact() {
 	const map = useRef(null);
 	const instance = useRef(null);
+	const view = useRef(null);
 	const [Traffic, setTraffic] = useState(false);
 	const [Index, setIndex] = useState(0);
 	const { kakao } = window;
@@ -60,6 +61,15 @@ export default function Contact() {
 		const mapTypeControl = new kakao.maps.MapTypeControl();
 		instance.current.addControl(mapTypeControl, kakao.maps.ControlPosition.BOTTOMLEFT);
 		window.addEventListener('resize', setCenter);
+
+		const roadviewContainer = view.current; //로드뷰를 표시할 div
+		const roadview = new kakao.maps.Roadview(roadviewContainer); //로드뷰 객체
+		const roadviewClient = new kakao.maps.RoadviewClient(); //좌표로부터 로드뷰 파노ID를 가져올 로드뷰 helper객체
+		const position = info.current[Index].latlng;
+
+		roadviewClient.getNearestPanoId(position, 50, (panoId) => {
+			roadview.setPanoId(panoId, position); //panoId와 중심좌표를 통해 로드뷰 실행
+		});
 	}, [Index]);
 
 	useEffect(() => {
@@ -77,8 +87,7 @@ export default function Contact() {
 			</button>
 
 			<div className='map' ref={map}></div>
-
-			<button onClick={setCenter}>지도 위치 초기화</button>
+			<div className='view' ref={view}></div>
 			<ul>
 				{info.current.map((el, idx) => (
 					<li className={Index === idx ? 'on' : ''} key={idx} onClick={() => setIndex(idx)}>
