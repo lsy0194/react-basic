@@ -84,7 +84,7 @@ export default function Contact() {
 	const sendEmail = (e) => {
 		e.preventDefault();
 
-		emailjs.sendForm('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', form.current, 'YOUR_PUBLIC_KEY').then(
+		emailjs.sendForm('service_wgk71uk', 'template_lq40xvd', form.current, 'Ks1uadQ2aRvNTcbAG').then(
 			(result) => {
 				alert('문의내용이 메일로 발송되었습니다.');
 			},
