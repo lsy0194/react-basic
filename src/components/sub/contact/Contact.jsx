@@ -94,10 +94,10 @@ export default function Contact() {
 		//변수를 `${}`로 감싸서 문자형식으로 전달
 		emailjs
 			.sendForm(
-				`${process.env.REACT_APP_SERVICE_ID}`,
-				`${process.env.REACT_APP_TEMPLATE_ID}`,
+				process.env.REACT_APP_SERVICE_ID,
+				process.env.REACT_APP_TEMPLATE_ID,
 				form.current,
-				`${process.env.REACT_APP_PUBLIC_KEY}`
+				process.env.REACT_APP_PUBLIC_KEY
 			)
 			.then(
 				(result) => {
