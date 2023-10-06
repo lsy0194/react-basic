@@ -25,7 +25,7 @@ export default function Gallery() {
 					<article key={idx}>
 						<h2>{data.title}</h2>
 						<img
-							src={`https://live.staticflickr.com/${data.server}/${data.id}_${data.secret}_m.jpg`}
+							src={`https://live.staticflickr.com/${data.server}/${data.id}_${data.secret}_b.jpg`} //이미지 출력
 							alt={data.title}
 						/>
 					</article>
