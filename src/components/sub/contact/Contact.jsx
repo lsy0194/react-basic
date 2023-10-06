@@ -6,7 +6,7 @@ export default function Contact() {
 	const map = useRef(null);
 	const instance = useRef(null);
 	const [Traffic, setTraffic] = useState(false);
-	const [Index, setIndex] = useState(1);
+	const [Index, setIndex] = useState(0);
 	const { kakao } = window;
 
 	const info = useRef([
@@ -51,7 +51,7 @@ export default function Contact() {
 		marker.setMap(instance.current);
 		const mapTypeControl = new kakao.maps.MapTypeControl();
 		instance.current.addControl(mapTypeControl, kakao.maps.ControlPosition.BOTTOMLEFT);
-	}, []);
+	}, [Index]);
 
 	useEffect(() => {
 		Traffic
@@ -66,7 +66,16 @@ export default function Contact() {
 			<button onClick={() => setTraffic(!Traffic)}>
 				{Traffic ? '교통정보 끄기' : '교통정보 켜기'}
 			</button>
+
 			<div className='map' ref={map}></div>
+
+			<ul>
+				{info.current.map((el, idx) => (
+					<li key={idx} onClick={() => setIndex(idx)}>
+						{el.title}
+					</li>
+				))}
+			</ul>
 		</Layout>
 	);
 }
