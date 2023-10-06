@@ -81,6 +81,13 @@ export default function Contact() {
 			: instance.current.removeOverlayMapTypeId(kakao.maps.MapTypeId.TRAFFIC);
 	}, [Traffic]);
 
+	const resetFrom = () => {
+		const [nameKey, nameValue, emailKey, emaliValue, msgKey, msgValue] = form.current.children;
+		nameValue.value = '';
+		emaliValue.value = '';
+		msgValue.value = '';
+	};
+
 	const sendEmail = (e) => {
 		e.preventDefault();
 		//sendFrom메서드는 각 키값을 문자열로만 인수로 전달되도록 type지정되어 있기 떄문에
@@ -96,10 +103,12 @@ export default function Contact() {
 				(result) => {
 					alert('문의내용이 메일로 발송되었습니다.');
 					console.log(result);
+					resetFrom();
 				},
 				(error) => {
 					alert('문의내용 전송에 실패했습니다.');
 					console.log(error);
+					resetFrom();
 				}
 			);
 	};
