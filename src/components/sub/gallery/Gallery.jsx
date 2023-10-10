@@ -13,6 +13,7 @@ export default function Gallery() {
 	//대체이미지가 추가되었는지 아닌지를 확인하는 state
 	//Fix(true): 대체이미지 추가됨, Fix(false): 대체이미지 적용안됨
 	const [Fix, setFix] = useState(false);
+	const [IsUser, setIsUser] = useState(true);
 
 	const fetchData = async (opt) => {
 		let count = 0;
@@ -76,6 +77,7 @@ export default function Gallery() {
 				<form
 					onSubmit={(e) => {
 						e.preventDefault();
+						setIsUser(false);
 						if (refInput.current.value.trim() === '') {
 							return alert('검색어를 입력하세요.');
 						}
@@ -93,6 +95,7 @@ export default function Gallery() {
 				<button
 					className='on'
 					onClick={(e) => {
+						setIsUser(true);
 						//각 버튼 클릭시 해당 버튼에 만약 on클래스가 있으면 이미 활성화 되어 있는 버튼이므로 return으로 종료해서
 						//fetchData함수 호출 방지
 						if (e.target.classList.contains('on')) return;
@@ -107,6 +110,7 @@ export default function Gallery() {
 				</button>
 				<button
 					onClick={(e) => {
+						setIsUser(false);
 						//각 버튼 클릭시 해당 버튼에 만약 on클래스가 있으면 이미 활성화 되어 있는 버튼이므로 return으로 종료해서
 						//fetchData함수 호출 방지
 						if (e.target.classList.contains('on')) return;
@@ -144,7 +148,7 @@ export default function Gallery() {
 
 									<div className='profile'>
 										<img
-											src={`http://farm${data.farm}.staticflickr.com/${data.server}/buddyicons/${data.owner2}.jpg`}
+											src={`http://farm${data.farm}.staticflickr.com/${data.server}/buddyicons/${data.owner}.jpg`}
 											alt={data.owner}
 											onError={(e) => {
 												//만약 프로필 이미지에서 에러가 발생하면 대체이미지를 추가
@@ -157,7 +161,9 @@ export default function Gallery() {
 										/>
 										<span
 											onClick={() => {
+												if (IsUser) return;
 												fetchData({ type: 'user', id: data.owner });
+												setIsUser(true);
 											}}
 										>
 											{data.owner}
