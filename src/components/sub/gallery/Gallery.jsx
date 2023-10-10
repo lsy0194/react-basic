@@ -10,6 +10,8 @@ export default function Gallery() {
 	const my_id = '199274089@N03';
 	const [Loader, setLoader] = useState(true);
 	const fetchData = async (opt) => {
+		setLoader(true);
+		refFrame.current.classList.remove('on');
 		let url = '';
 		const api_key = 'f5f709637c0790e1103971c1302b229e';
 		const method_interest = 'flickr.interestingness.getList';
@@ -47,6 +49,7 @@ export default function Gallery() {
 				if (count === imgs.length) {
 					console.log('모든 이미지 소스 렌더링 완료!');
 					setLoader(false);
+					refFrame.current.classList.add('on');
 				}
 			};
 		});
