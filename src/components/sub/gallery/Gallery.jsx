@@ -1,7 +1,11 @@
 import Layout from '../../common/layout/Layout';
 import './Gallery.scss';
 import { useRef, useEffect, useState } from 'react';
+import Masonry from 'react-masonry-component';
 
+const masonryOptions = {
+	transitionDuration: 0,
+};
 export default function Gallery() {
 	const [Pics, setPics] = useState([]);
 	const api_key = 'f5f709637c0790e1103971c1302b229e';
@@ -21,26 +25,33 @@ export default function Gallery() {
 	return (
 		<Layout title={'Gallery'}>
 			<div className='picFrame'>
-				{Pics.map((data, idx) => {
-					return (
-						<article key={idx}>
-							<div className='inner'>
-								<img
-									src={`https://live.staticflickr.com/${data.server}/${data.id}_${data.secret}_m.jpg`} //이미지 출력
-									alt={data.title}
-								/>
-								<h2>{data.title}</h2>
-								<div className='profile'>
+				<Masonry
+					elementType={'div'} // default 'div'
+					options={masonryOptions} // default {}
+					disableImagesLoaded={false}
+					updateOnEachImageLoad={false}
+				>
+					{Pics.map((data, idx) => {
+						return (
+							<article key={idx}>
+								<div className='inner'>
 									<img
-										src={`http://farm${data.farm}.staticflickr.com/${data.server}/buddyicons/${data.owner}.jpg`}
-										alt={'{data.owner}'}
+										src={`https://live.staticflickr.com/${data.server}/${data.id}_${data.secret}_m.jpg`} //이미지 출력
+										alt={data.title}
 									/>
-									<span>{data.owner}</span>
+									<h2>{data.title}</h2>
+									<div className='profile'>
+										<img
+											src={`http://farm${data.farm}.staticflickr.com/${data.server}/buddyicons/${data.owner}.jpg`}
+											alt={`https://live.staticflickr.com/${data.server}/${data.id}_${data.secret}_b.jpg`}
+										/>
+										<span>{data.owner}</span>
+									</div>
 								</div>
-							</div>
-						</article>
-					);
-				})}
+							</article>
+						);
+					})}
+				</Masonry>
 			</div>
 		</Layout>
 	);
