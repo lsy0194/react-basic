@@ -1,0 +1,40 @@
+.Gallery {
+	.picFrame {
+		width: 100%;
+		&::after {
+			content: '';
+			display: none;
+			clear: both;
+		}
+
+		article {
+			width: 25%;
+			padding: 10px;
+			float: left;
+			.inner {
+				width: 100%;
+				padding: 10px;
+				background: #fff;
+
+				img {
+					width: 100%;
+				}
+				h2 {
+					font: normal 1rem/1.2 'arial';
+					color: #555;
+					margin-top: 10px;
+					margin-bottom: 40px;
+				}
+				.profile {
+					width: 100%;
+					display: flex;
+					align-items: center;
+					gap: 20px;
+					span {
+						font-size: 0.8rem;
+					}
+				}
+			}
+		}
+	}
+}
