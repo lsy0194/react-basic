@@ -1,6 +1,15 @@
 @import '../../../styles/Variable.scss';
 
 .Gallery {
+	.loading {
+		position: fixed;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+
+		&:off {
+		}
+	}
 	.picFrame {
 		width: 100%;
 		&::after {
