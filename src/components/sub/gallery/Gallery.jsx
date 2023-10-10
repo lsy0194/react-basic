@@ -8,7 +8,7 @@ export default function Gallery() {
 	const refInput = useRef(null);
 	const [Pics, setPics] = useState([]);
 	const my_id = '199274089@N03';
-	const [Loader, setLoader] = useState(false);
+	const [Loader, setLoader] = useState(true);
 	const fetchData = async (opt) => {
 		let url = '';
 		const api_key = 'f5f709637c0790e1103971c1302b229e';
@@ -46,6 +46,7 @@ export default function Gallery() {
 				console.log('현재 로딩된 img갯수', count);
 				if (count === imgs.length) {
 					console.log('모든 이미지 소스 렌더링 완료!');
+					setLoader(false);
 				}
 			};
 		});
@@ -83,6 +84,7 @@ export default function Gallery() {
 				<button onClick={() => fetchData({ type: 'user', id: my_id })}>My Gallery</button>
 				<button onClick={() => fetchData({ type: 'interest' })}>Interest Gallery</button>
 			</div>
+			{/* Loader가 true일때에만 로딩 이미지 출력 */}
 			{Loader && (
 				<img className='loading' src={`${process.env.PUBLIC_URL}/img/loading.gif`} alt='loading' />
 			)}
