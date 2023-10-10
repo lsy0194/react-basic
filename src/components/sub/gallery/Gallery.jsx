@@ -37,6 +37,8 @@ export default function Gallery() {
 
 	return (
 		<Layout title={'Gallery'}>
+			<button onClick={() => fetchData({ type: 'user', id: my_id })}>My Gallery</button>
+			<button onClick={() => fetchData({ type: 'interest' })}>Interest Gallery</button>
 			<div className='picFrame'>
 				<Masonry
 					elementType={'div'} // default 'div'
