@@ -60,7 +60,9 @@ export default function Gallery() {
 											src={`http://farm${data.farm}.staticflickr.com/${data.server}/buddyicons/${data.owner}.jpg`}
 											alt={`https://live.staticflickr.com/${data.server}/${data.id}_${data.secret}_b.jpg`}
 										/>
-										<span>{data.owner}</span>
+										<span onClick={() => fetchData({ type: 'user', id: data.owner })}>
+											{data.owner}
+										</span>
 									</div>
 								</div>
 							</article>
