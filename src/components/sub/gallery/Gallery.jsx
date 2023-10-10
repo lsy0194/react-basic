@@ -6,9 +6,11 @@ import Masonry from 'react-masonry-component';
 export default function Gallery() {
 	const refFrame = useRef(null);
 	const refInput = useRef(null);
+	const refBtnSet = useRef(null);
 	const [Pics, setPics] = useState([]);
 	const my_id = '199274089@N03';
 	const [Loader, setLoader] = useState(true);
+
 	const fetchData = async (opt) => {
 		setLoader(true);
 		refFrame.current.classList.remove('on');
@@ -17,7 +19,7 @@ export default function Gallery() {
 		const method_interest = 'flickr.interestingness.getList';
 		const method_user = 'flickr.people.getPhotos';
 		const method_search = 'flickr.photos.search';
-		const num = 500;
+		const num = 100;
 
 		//fetching함수 호출시 타입값이 있는 객체를 인수로 전달하면 해당 타입에 따라 호출 URL이 변경되고
 		//해당URL을 통해 받아지는 데이터로 달라짐
@@ -83,9 +85,36 @@ export default function Gallery() {
 				</form>
 			</div>
 
-			<div className='btnSet'>
-				<button onClick={() => fetchData({ type: 'user', id: my_id })}>My Gallery</button>
-				<button onClick={() => fetchData({ type: 'interest' })}>Interest Gallery</button>
+			<div className='btnSet' ref={refBtnSet}>
+				<button
+					className='on'
+					onClick={(e) => {
+						//각 버튼 클릭시 해당 버튼에 만약 on클래스가 있으면 이미 활성화 되어 있는 버튼이므로 return으로 종료해서
+						//fetchData함수 호출 방지
+						if (e.target.classList.contains('on')) return;
+						const btns = refBtnSet.current.querySelectorAll('button');
+						btns.forEach((btn) => btn.classList.remove('on'));
+
+						e.target.classList.add('on');
+						fetchData({ type: 'user', id: my_id });
+					}}
+				>
+					My Gallery
+				</button>
+				<button
+					onClick={(e) => {
+						//각 버튼 클릭시 해당 버튼에 만약 on클래스가 있으면 이미 활성화 되어 있는 버튼이므로 return으로 종료해서
+						//fetchData함수 호출 방지
+						if (e.target.classList.contains('on')) return;
+						const btns = refBtnSet.current.querySelectorAll('button');
+						btns.forEach((btn) => btn.classList.remove('on'));
+
+						e.target.classList.add('on');
+						fetchData({ type: 'interest' });
+					}}
+				>
+					Interest Gallery
+				</button>
 			</div>
 			{/* Loader가 true일때에만 로딩 이미지 출력 */}
 			{Loader && (
