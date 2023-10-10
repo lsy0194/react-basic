@@ -10,6 +10,9 @@ export default function Gallery() {
 	const [Pics, setPics] = useState([]);
 	const my_id = '199274089@N03';
 	const [Loader, setLoader] = useState(true);
+	//대체이미지가 추가되었는지 아닌지를 확인하는 state
+	//Fix(true): 대체이미지 추가됨, Fix(false): 대체이미지 적용안됨
+	const [Fix, setFix] = useState(false);
 
 	const fetchData = async (opt) => {
 		let count = 0;
@@ -22,8 +25,6 @@ export default function Gallery() {
 		const method_search = 'flickr.photos.search';
 		const num = 10;
 
-		//fetching함수 호출시 타입값이 있는 객체를 인수로 전달하면 해당 타입에 따라 호출 URL이 변경되고
-		//해당URL을 통해 받아지는 데이터로 달라짐
 		if (opt.type === 'interest') {
 			url = `https://www.flickr.com/services/rest/?method=${method_interest}&api_key=${api_key}&per_page=${num}&nojsoncallback=1&format=json`;
 		}
@@ -48,7 +49,10 @@ export default function Gallery() {
 			img.onload = () => {
 				++count;
 				console.log('현재 로딩된 img갯수', count);
-				if (count === imgs.length - 2) {
+				//이미지 소스 렌더링 유무 카운트할때
+				//Fix값이 true이면 대체 이미지가 이미 캐싱되어 있는 상태이므로 profile이미지를 제외한 이미지 갯수와 비교
+				//Fix값이 false이면 대체 이미지가 캐싱되어있지 않는 상태이므로 prfoile이미지까지 포함해서 갯수 비교
+				if (count === (Fix ? imgs.length / 2 - 1 : imgs.length - 2)) {
 					console.log('모든 이미지 소스 렌더링 완료!');
 					setLoader(false);
 					refFrame.current.classList.add('on');
@@ -140,15 +144,22 @@ export default function Gallery() {
 
 									<div className='profile'>
 										<img
-											src={`http://farm${data.farm}.staticflickr.com/${data.server}/buddyicons/${data.owner}.jpg`}
+											src={`http://farm${data.farm}.staticflickr.com/${data.server}/buddyicons/${data.owner2}.jpg`}
 											alt={data.owner}
 											onError={(e) => {
-												//만약 사용자가 프로필 이미지를 올리지 않았을때 엑박이 뜨므로
-												//onError이벤트를 연결해서 대체이미지 출력
+												//만약 프로필 이미지에서 에러가 발생하면 대체이미지를 추가
+												//이때 대체이미지는 같은 이미지를 계속 호출하기 때문에 이미 캐싱처리 되어 있어서
+												//다음번 렌더링 타이임에 count값에 포함이 안됨
+												//따라서 대체이미지 추가 유무를 Fix라는 state에 담아서 구분
+												setFix(true);
 												e.target.setAttribute('src', 'https://www.flickr.com/images/buddyicon.gif');
 											}}
 										/>
-										<span onClick={() => fetchData({ type: 'user', id: data.owner })}>
+										<span
+											onClick={() => {
+												fetchData({ type: 'user', id: data.owner });
+											}}
+										>
 											{data.owner}
 										</span>
 									</div>
