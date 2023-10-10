@@ -1,8 +1,10 @@
 import Layout from '../../common/layout/Layout';
 import './Gallery.scss';
-import { useRef, useEffect, useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Masonry from 'react-masonry-component';
+
 export default function Gallery() {
+	const refInput = useRef(null);
 	const [Pics, setPics] = useState([]);
 	const my_id = '199274089@N03';
 
@@ -37,11 +39,27 @@ export default function Gallery() {
 		//type: 'search' 검색키워드로 갤러리 호출
 		//fetchData({ type: 'user', id: my_id });
 		//fetchData({ type: 'interest' });
-		fetchData({ type: 'search', tags: 'ocean' });
+		fetchData({ type: 'user', id: my_id });
 	}, []);
 
 	return (
 		<Layout title={'Gallery'}>
+			<form
+				onSubmit={(e) => {
+					//submit이벤트의 기본 서버 전송기능을 막아줌
+					e.preventDefault();
+					//문자열.trim() : 문자열앞뒤로 빈칸을 제거해서 정리
+					if (refInput.current.value.trim() === '') {
+						return alert('검색어를 입력하세요.');
+					}
+
+					fetchData({ type: 'search', tags: refInput.current.value });
+					refInput.current.value = '';
+				}}
+			>
+				<input ref={refInput} type='text' placeholder='검색어를 입력하세요' />
+				<button>검색</button>
+			</form>
 			<button onClick={() => fetchData({ type: 'user', id: my_id })}>My Gallery</button>
 			<button onClick={() => fetchData({ type: 'interest' })}>Interest Gallery</button>
 			<div className='picFrame'>
