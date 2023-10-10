@@ -27,7 +27,7 @@ export default function Gallery() {
 			<div className='picFrame'>
 				<Masonry
 					elementType={'div'} // default 'div'
-					options={masonryOptions} // default {}
+					options={{ transitionDuration: '0.5s' }} // default {}
 					disableImagesLoaded={false}
 					updateOnEachImageLoad={false}
 				>
