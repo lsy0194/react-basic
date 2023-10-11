@@ -11,8 +11,6 @@ export default function Gallery() {
 	const [Pics, setPics] = useState([]);
 	const my_id = '199274089@N03';
 	const [Loader, setLoader] = useState(true);
-	//대체이미지가 추가되었는지 아닌지를 확인하는 state
-	//Fix(true): 대체이미지 추가됨, Fix(false): 대체이미지 적용안됨
 	const [Fix, setFix] = useState(false);
 	const [IsUser, setIsUser] = useState(true);
 	const [ActiveURL, setActiveURL] = useState('');
@@ -44,7 +42,7 @@ export default function Gallery() {
 		if (json.photos.photo.length === 0) {
 			return alert('해당 검색어의 결과값이 없습니다.');
 		}
-		//실제 데이터가 state에 담긱는 순간 가상돔이 생성되는 순간
+
 		setPics(json.photos.photo);
 		const imgs = refFrame.current?.querySelectorAll('img');
 		console.log(imgs);
@@ -53,9 +51,6 @@ export default function Gallery() {
 			img.onload = () => {
 				++count;
 				console.log('현재 로딩된 img갯수', count);
-				//이미지 소스 렌더링 유무 카운트할때
-				//Fix값이 true이면 대체 이미지가 이미 캐싱되어 있는 상태이므로 profile이미지를 제외한 이미지 갯수와 비교
-				//Fix값이 false이면 대체 이미지가 캐싱되어있지 않는 상태이므로 prfoile이미지까지 포함해서 갯수 비교
 				if (count === (Fix ? imgs.length / 2 - 1 : imgs.length - 2)) {
 					console.log('모든 이미지 소스 렌더링 완료!');
 					setLoader(false);
@@ -81,9 +76,7 @@ export default function Gallery() {
 					<form
 						onSubmit={(e) => {
 							e.preventDefault();
-							//검색 갤러리 이벤트 발생시 IsUser값을 false로 변경
 							setIsUser(false);
-							//submit이벤트 발생시에도 기존 2개 버튼 on을 다시 초기해서 클릭가능하도록 변경
 							const btns = refBtnSet.current.querySelectorAll('button');
 							btns.forEach((btn) => btn.classList.remove('on'));
 							if (refInput.current.value.trim() === '') {
@@ -103,7 +96,6 @@ export default function Gallery() {
 					<button
 						className='on'
 						onClick={(e) => {
-							//마이갤러리 버튼 클릭시 User type갤러리이기 때문에 IsUser값을 true로 변경
 							setIsUser(true);
 							if (e.target.classList.contains('on')) return;
 
@@ -118,8 +110,6 @@ export default function Gallery() {
 					</button>
 					<button
 						onClick={(e) => {
-							//Interest Gallery는 User type 갤러리가 아니기 때문에
-							//IsUser값을 false로 변경
 							setIsUser(false);
 							if (e.target.classList.contains('on')) return;
 
@@ -168,10 +158,6 @@ export default function Gallery() {
 												src={`http://farm${data.farm}.staticflickr.com/${data.server}/buddyicons/${data.owner}.jpg`}
 												alt={data.owner}
 												onError={(e) => {
-													//만약 프로필 이미지에서 에러가 발생하면 대체이미지를 추가
-													//이때 대체이미지는 같은 이미지를 계속 호출하기 때문에 이미 캐싱처리 되어 있어서
-													//다음번 렌더링 타이임에 count값에 포함이 안됨
-													//따라서 대체이미지 추가 유무를 Fix라는 state에 담아서 구분
 													setFix(true);
 													e.target.setAttribute(
 														'src',
@@ -181,10 +167,7 @@ export default function Gallery() {
 											/>
 											<span
 												onClick={() => {
-													//사용자 아이디 클릭시 현재 출력되는 갤러리가 User 타입 갤러리면 이벤트 호출 방지
 													if (IsUser) return;
-
-													//fetchData가 실행이 되면 다시 User type갤러리로 변경되므로 다시 IsUser값을 true로 변경
 													fetchData({ type: 'user', id: data.owner });
 													setIsUser(true);
 												}}
