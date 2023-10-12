@@ -56,6 +56,7 @@ export default function Contact() {
 
 	//지도위치를 중심으로 이동시키는 핸들러 함수 제작
 	const setCenter = () => {
+		console.log('지도화면에서 마커 가운데 보정');
 		// 지도 중심을 이동 시킵니다
 		instance.current.setCenter(info.current[Index].latlng);
 	};
@@ -72,8 +73,13 @@ export default function Contact() {
 		marker.setMap(instance.current);
 		const mapTypeControl = new kakao.maps.MapTypeControl();
 		instance.current.addControl(mapTypeControl, kakao.maps.ControlPosition.BOTTOMLEFT);
-		//Contect페이지에서만 동작되어야 하는 핸들러함수를 최상위객체인window에 직접 연결했기 때문에
-		//리우터로 다른페이지이동하더라도
+
+		//지도 생성시 마커 고정적으로 적용되기 때문에 브라우저 리사이즈시 마커가 가운데 위치하지 않는 문제
+		//마커를 가운데 고정시키는 함수를 제작한뒤 윈도우객체 직접 resize이벤트 발생시마다 핸들러함수 호출해서 마커위치 보정
+
+		//Contact페이지에만 동작되야 되는 핸들러함수를 최상위 객체인 window에 직접 연결했기 때문에
+		//라우터로 다른페이지이동하더라도 계속해서 setCenter호출되는 문제점 발생
+		//해결방법: Contact 컴포넌트가 언마운트시 강제로 윈도우객체에서 setCenter핸들러를 제거
 		window.addEventListener('resize', setCenter);
 		//로드뷰관련코드
 
@@ -84,6 +90,9 @@ export default function Contact() {
 				new kakao.maps.Roadview(view.current).setPanoId(panoId, info.current[Index].latlng); //panoId와 중심좌표를 통해 로드뷰 실행
 			}
 		);
+		return () => {
+			window.removeEventListener('resize', setCenter);
+		};
 	}, [Index]);
 
 	useEffect(() => {
