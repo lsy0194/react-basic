@@ -2,90 +2,104 @@
 	figure {
 		background: orange;
 	}
-
 	.content {
 		width: 100%;
-
 		h1 {
 			text-align: center;
 		}
-		#mailBox {
-			border: 1px solid red;
+
+		.upperBox {
 			width: 70vw;
 			margin: 0px auto;
-			margin-bottom: 100px;
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: space-between;
 
-			.upper {
-				width: 100%;
-				display: flex;
-				margin-bottom: 50px;
-				justify-content: space-between;
+			#mailBox {
+				width: 50%;
+				margin: 0px auto;
+				margin-bottom: 100px;
+				padding-right: 50px;
 
-				span {
-					width: 48%;
+				.upper {
+					width: 100%;
+					display: flex;
+					margin-bottom: 50px;
+					justify-content: space-between;
+
+					span {
+						width: 48%;
+
+						label {
+							font: bold 1rem/1 'arial';
+							color: #555;
+							width: 100%;
+							position: relative;
+						}
+						input[type='text'],
+						input[type='email'] {
+							width: 100%;
+							border: none;
+							padding: 10px 20px;
+							border-bottom: 1px solid #555;
+							margin-right: 50px;
+							outline: none;
+							transition: 0.5s;
+
+							&:focus {
+								background: lightcyan;
+							}
+						}
+					}
+				}
+				.lower {
+					width: 100%;
+					margin-bottom: 10px;
 
 					label {
+						display: block;
+						margin-bottom: 5px;
 						font: bold 1rem/1 'arial';
 						color: #555;
-						margin-right: 20px;
-						position: relative;
-						top: 20px;
 					}
-					input[type='text'],
-					input[type='email'] {
+					textarea {
+						width: 100%;
+						padding: 10px;
 						border: none;
-						padding: 10px 20px;
 						border-bottom: 1px solid #555;
 						margin-right: 50px;
+						resize: none;
 						outline: none;
 						transition: 0.5s;
-
 						&:focus {
 							background: lightcyan;
 						}
 					}
 				}
-			}
-			.lower {
-				width: 100%;
-				margin-bottom: 10px;
 
-				label {
-					display: block;
-					margin-bottom: 5px;
-					font: bold 1rem/1 'arial';
-					color: #555;
-				}
-				textarea {
+				.btnSet {
 					width: 100%;
-					padding: 10px;
-					border: none;
-					border-bottom: 1px solid #555;
-					margin-right: 50px;
-					resize: none;
-					outline: none;
-					transition: 0.5s;
-					&:focus {
-						background: lightcyan;
+					padding-right: 20px;
+					display: flex;
+					gap: 50px;
+
+					input {
+						display: block;
+						height: 40px;
+						background: transparent;
+						border: 1px solid #666;
+						font: 1rem/40px 'arial';
+						color: #555;
+						text-align: center;
 					}
 				}
 			}
 
-			.btnSet {
-				width: 100%;
-				padding-right: 20px;
-				display: flex;
-				gap: 50px;
-
-				input {
-					display: block;
-					height: 40px;
-					background: transparent;
-					border: 1px solid #666;
-					font: 1rem/40px 'arial';
-					color: #555;
-					text-align: center;
-				}
+			#etc {
+				width: 50%;
+				height: 300px;
+				padding-left: 50px;
+				border-left: 1px solid #aaa;
 			}
 		}
 
@@ -99,7 +113,6 @@
 				height: 60vh;
 				background: #111;
 				position: relative;
-
 				.map,
 				.view {
 					width: 100%;
@@ -110,22 +123,18 @@
 					left: 0px;
 					opacity: 0;
 					z-index: 1;
-
 					&.on {
 						opacity: 1;
 						z-index: 2;
 					}
 				}
 			}
-
 			ul {
 				display: flex;
 				gap: 20px;
-
 				li {
 					cursor: pointer;
 				}
-
 				li.on {
 					color: hotpink;
 				}
