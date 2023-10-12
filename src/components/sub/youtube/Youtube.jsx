@@ -51,16 +51,8 @@ export default function Youtube() {
 								<p>{desc.length > 180 ? desc.substr(0, 180) + '...' : desc}</p>
 								<span>{date.split('T')[0].split('-').join('.')}</span>
 							</div>
-							<div
-								className='picBox'
-								onClick={() => {
-									setIndex(idx);
-									setIsModal(true);
-								}}
-							>
-								<Link to={`/youtube/${idx}`}>
-									<img src={data.snippet.thumbnails.standard.url} alt={data.title} />
-								</Link>
+							<div className='picBox'>
+								<img src={data.snippet.thumbnails.standard.url} alt={data.title} />
 							</div>
 						</article>
 					);
