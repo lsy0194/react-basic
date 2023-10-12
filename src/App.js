@@ -6,6 +6,7 @@ import Department from './components/sub/department/Department';
 import Youtube from './components/sub/youtube/Youtube';
 import Members from './components/sub/members/Members';
 import Gallery from './components/sub/gallery/Gallery';
+import Detail from './components/sub/youtube/Detail';
 import Contact from './components/sub/contact/Contact';
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
 			<Route path='/department' component={Department} />
 			<Route path='/gallery' component={Gallery} />
 			<Route path='/youtube' component={Youtube} />
+			<Route path='/youtube/detail/:id' component={Detail} />
 			<Route path='/members' component={Members} />
 			<Route path='/contact' component={Contact} />
 		</>
