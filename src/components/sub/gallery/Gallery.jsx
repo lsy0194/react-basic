@@ -5,21 +5,16 @@ import { useState, useEffect, useRef } from 'react';
 import Masonry from 'react-masonry-component';
 
 export default function Gallery() {
-	const refFrame = useRef(null);
 	const refInput = useRef(null);
 	const refBtnSet = useRef(null);
 	const [Pics, setPics] = useState([]);
-	const my_id = '199274089@N03';
-	const [Loader, setLoader] = useState(true);
-	const [Fix, setFix] = useState(false);
-	const [IsUser, setIsUser] = useState(true);
 	const [ActiveURL, setActiveURL] = useState('');
-	const [Open, setOpen] = useState(false);
+	const [IsUser, setIsUser] = useState(true);
 	const [IsModal, setIsModal] = useState(false);
+	const my_id = '164021883@N04';
+
+	//처음 마운트 데이터 호출 함수
 	const fetchData = async (opt) => {
-		let count = 0;
-		setLoader(true);
-		refFrame.current.classList.remove('on');
 		let url = '';
 		const api_key = '2a1a0aebb34012a99c23e13b49175343';
 		const method_interest = 'flickr.interestingness.getList';
@@ -41,71 +36,47 @@ export default function Gallery() {
 			return alert('해당 검색어의 결과값이 없습니다.');
 		}
 		setPics(json.photos.photo);
-
-		const imgs = refFrame.current?.querySelectorAll('img');
-
-		imgs.forEach((img) => {
-			img.onload = () => {
-				++count;
-				if (count === (Fix ? imgs.length / 2 - 1 : imgs.length - 2)) {
-					setLoader(false);
-					refFrame.current.classList.add('on');
-				}
-			};
-		});
 	};
 
 	//submit이벤트 발생시 실행할 함수
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		setIsUser(false);
-
 		const btns = refBtnSet.current.querySelectorAll('button');
 		btns.forEach((btn) => btn.classList.remove('on'));
-
 		if (refInput.current.value.trim() === '') {
 			return alert('검색어를 입력하세요.');
 		}
-
 		fetchData({ type: 'search', tags: refInput.current.value });
 		refInput.current.value = '';
 	};
-
 	//myGallery 클릭 이벤트 발생시 실행할 함수
 	const handleClickMy = (e) => {
 		setIsUser(true);
 		if (e.target.classList.contains('on')) return;
-
 		const btns = refBtnSet.current.querySelectorAll('button');
 		btns.forEach((btn) => btn.classList.remove('on'));
 		e.target.classList.add('on');
-
 		fetchData({ type: 'user', id: my_id });
 	};
-
 	//Interest Gallery 클릭 이벤트 발생시 실행할 함수
 	const handleClickInterest = (e) => {
 		setIsUser(false);
 		if (e.target.classList.contains('on')) return;
-
 		const btns = refBtnSet.current.querySelectorAll('button');
 		btns.forEach((btn) => btn.classList.remove('on'));
 		e.target.classList.add('on');
-
 		fetchData({ type: 'interest' });
 	};
-
 	//profile 아이디 클릭시 실행할 함수
 	const handleClickProfile = (e) => {
 		if (IsUser) return;
 		fetchData({ type: 'user', id: e.target.innerText });
 		setIsUser(true);
 	};
-
 	useEffect(() => {
 		fetchData({ type: 'user', id: my_id });
 	}, []);
-
 	return (
 		<>
 			<Layout title={'Gallery'}>
@@ -115,7 +86,6 @@ export default function Gallery() {
 						<button>검색</button>
 					</form>
 				</div>
-
 				<div className='btnSet' ref={refBtnSet}>
 					<button className='on' onClick={handleClickMy}>
 						My Gallery
@@ -123,14 +93,7 @@ export default function Gallery() {
 					<button onClick={handleClickInterest}>Interest Gallery</button>
 				</div>
 
-				{Loader && (
-					<img
-						className='loading'
-						src={`${process.env.PUBLIC_URL}/img/loading.gif`}
-						alt='loading'
-					/>
-				)}
-				<div className='picFrame' ref={refFrame}>
+				<div className='picFrame'>
 					<Masonry
 						elementType={'div'}
 						options={{ transitionDuration: '0.5s' }}
@@ -151,13 +114,11 @@ export default function Gallery() {
 											}}
 										/>
 										<h2>{data.title}</h2>
-
 										<div className='profile'>
 											<img
 												src={`http://farm${data.farm}.staticflickr.com/${data.server}/buddyicons/${data.owner}.jpg`}
 												alt={data.owner}
 												onError={(e) => {
-													setFix(true);
 													e.target.setAttribute(
 														'src',
 														'https://www.flickr.com/images/buddyicon.gif'
@@ -173,7 +134,6 @@ export default function Gallery() {
 					</Masonry>
 				</div>
 			</Layout>
-
 			{IsModal && (
 				<Modal setIsModal={setIsModal}>
 					<img src={ActiveURL} alt='img' />
