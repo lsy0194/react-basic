@@ -29,6 +29,7 @@ export default function Youtube() {
 
 		const data = await fetch(resultURL);
 		const json = await data.json();
+		console.log(json.items);
 		setYoutube(json.items);
 	};
 	useEffect(() => {
@@ -51,7 +52,8 @@ export default function Youtube() {
 								<span>{date.split('T')[0].split('-').join('.')}</span>
 							</div>
 							<div className='picBox'>
-								<Link to={`/detail/${data.snippet.resourceId.videoId}`}>
+								{/* 썸네일 링크 클릭시 특정유튜브 객체 하나의 정보값을 받기 위해서 유튜브 객체의 id값을 params로 전달 */}
+								<Link to={`/detail/${data.id}`}>
 									<img src={data.snippet.thumbnails.standard.url} alt={data.title} />
 								</Link>
 							</div>
