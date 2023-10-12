@@ -163,19 +163,14 @@ export default function Contact() {
 				</form>
 			</div>
 			<div className='mapbox'>
-				{/* <button onClick={() => setTraffic(true)}>주변 교통정보 보기</button>
-			<button onClick={() => setTraffic(false)}>주변 교통정보 끄기</button> */}
-				<button onClick={() => setTraffic(!Traffic)}>
-					{Traffic ? '교통정보 끄기' : '교통정보 켜기'}
-				</button>
-				<button onClick={setCenter}>지도위치초기화</button>
-				<button
-					onClick={() => {
-						setIsMap(!IsMap);
-					}}
-				>
-					{IsMap ? '지도보기' : '로드뷰보기'}
-				</button>
+				<div className='btnSet'>
+					<button onClick={() => setTraffic(!Traffic)}>
+						{Traffic ? '교통정보 끄기' : '교통정보 켜기'}
+					</button>
+
+					<button onClick={setCenter}>지도 위치 초기화</button>
+					<button onClick={() => setIsMap(!IsMap)}>{IsMap ? '로드뷰보기' : '지도보기'}</button>
+				</div>
 				<div className='container'>
 					<div className={`view  ${IsMap ? '' : 'on'}`} ref={view}></div>
 					<div className={`map  ${IsMap ? 'on' : ''}`} ref={map}></div>
