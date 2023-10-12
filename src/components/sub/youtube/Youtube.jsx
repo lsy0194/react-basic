@@ -1,7 +1,6 @@
 import Layout from '../../common/layout/Layout';
 import { Link } from 'react-router-dom';
 //import Modal from '../../common/modal/Modal';
-import Modal from '../../common/modal/Modal';
 import './Youtube.scss';
 import { useEffect, useState } from 'react';
 /*
@@ -52,7 +51,9 @@ export default function Youtube() {
 								<span>{date.split('T')[0].split('-').join('.')}</span>
 							</div>
 							<div className='picBox'>
-								<img src={data.snippet.thumbnails.standard.url} alt={data.title} />
+								<Link to={`/detail/${data.snippet.resourceId.videoId}`}>
+									<img src={data.snippet.thumbnails.standard.url} alt={data.title} />
+								</Link>
 							</div>
 						</article>
 					);
