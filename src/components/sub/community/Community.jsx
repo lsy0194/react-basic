@@ -5,6 +5,8 @@ import './Community.scss';
 export default function Community() {
 	const refInput = useRef(null);
 	const refTextarea = useRef(null);
+	const refEditInput = useRef(null);
+	const refEditTextarea = useRef(null);
 	const [Posts, setPosts] = useState([]);
 
 	const resetForm = () => {
@@ -35,48 +37,71 @@ export default function Community() {
 			})
 		);
 	};
+
+	//해당 글을 출력모드로 변경시키는 함수
+	const disableUpdate = (editIndex) => {
+		setPosts(
+			Posts.map((post, idx) => {
+				if (editIndex === idx) post.enableUpdate = false;
+				return post;
+			})
+		);
+	};
+
+	const updatePost = (updateIndex) => {
+		setPosts(
+			Posts.map((post, idx) => {
+				if (updateIndex === idx) {
+					post.title = refEditInput.current.value;
+					post.content = refEditTextarea.current.value;
+				}
+				return post;
+			})
+		);
+	};
+
 	return (
 		<Layout title={'Community'}>
 			<div className='inputBox'>
-				<input ref={refInput} type='text' placeholder='제목을 입력하세요' />
+				<input ref={refInput} type='text' placeholder='제목을 입력하세요.' />
 				<br />
-				<textarea ref={refTextarea} cols='30' rows='3' placeholder='본문을 입력하세요'></textarea>
-
+				<textarea ref={refTextarea} cols='30' rows='3' placeholder='본문을 입력하세요.'></textarea>
 				<nav className='btnSet'>
 					<button onClick={resetForm}>cancel</button>
 					<button onClick={createPost}>write</button>
 				</nav>
 			</div>
-
 			<div className='showBox'>
 				{Posts.map((post, idx) => {
 					if (post.enableUpdate) {
+						//수정 모드 렌더링
 						return (
 							<article key={idx}>
 								<div className='txt'>
-									<input
-										type='text'
-										value={post.title}
-										onChange={(e) => {
-											console.log(e.target.value);
-										}}
-									/>
+									<input type='text' defaultValue={post.title} ref={refEditInput} />
+									<br />
 									<textarea
 										//react에서 value속성을 적용하려면 무조건 onChange이벤트 연결 필수
 										//onChange이벤트 연결하지 않을때에는 value가닌 defaultValue속성 적용
-										value={post.content}
-										onChange={(e) => {
-											console.log(e.target.value);
-										}}
-									></textarea>
+										defaultValue={post.content}
+										ref={refEditTextarea}
+									/>
 								</div>
 								<nav className='btnSet'>
-									<button>Cancel</button>
-									<button>Update</button>
+									<button onClick={() => disableUpdate(idx)}>Cancel</button>
+									<button
+										onClick={() => {
+											disableUpdate(idx);
+											updatePost(idx);
+										}}
+									>
+										Update
+									</button>
 								</nav>
 							</article>
 						);
 					} else {
+						//출력 모드 렌더링
 						return (
 							<article key={idx}>
 								<div className='txt'>
