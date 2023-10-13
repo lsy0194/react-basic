@@ -99,8 +99,8 @@ export default function Community() {
 
 			<div className='showBox'>
 				{Posts.map((post, idx) => {
-					console.log(post.data);
-					const [year, month, date] = post.data.split('T')[0].split('-');
+					const string = JSON.stringify(post.data);
+					const [year, month, date] = string.split('T')[0].split('"')[1].split('-');
 					if (post.enableUpdate) {
 						//수정 모드 렌더링
 						return (
