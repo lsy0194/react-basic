@@ -42,10 +42,14 @@ export default function Community() {
 				{Posts.map((post, idx) => {
 					return (
 						<article key={idx}>
-							<h2>{post.title}</h2>
-							<p>{post.content}</p>
-							<button>Edit</button>
-							<button onClick={() => deletePost(idx)}>Delete</button>
+							<div className='txt'>
+								<h2>{post.title}</h2>
+								<p>{post.content}</p>
+							</div>
+							<nav className='btnSet'>
+								<button>Edit</button>
+								<button onClick={() => deletePost(idx)}>Delete</button>
+							</nav>
 						</article>
 					);
 				})}
