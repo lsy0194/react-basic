@@ -45,6 +45,15 @@
 					h2 {
 						margin-bottom: 10px;
 					}
+					input[type='text'],
+					textarea {
+						width: 50%;
+						padding: 8px 10px;
+						border: 1px solid #aaa;
+						resize: none;
+						margin-bottom: 10px;
+						background: #f0fdff;
+					}
 				}
 				.btnSet {
 					width: 100%;

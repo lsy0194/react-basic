@@ -9,6 +9,7 @@ import Gallery from './components/sub/gallery/Gallery';
 import Detail from './components/sub/youtube/Detail';
 import Contact from './components/sub/contact/Contact';
 import Community from './components/sub/community/Community';
+import Main from './components/main/mainwarp/Main';
 
 function App() {
 	return (
@@ -18,6 +19,7 @@ function App() {
 				<Route exact path='/'>
 					{/* 메인페이지 전용 헤더 */}
 					<Header isMain={true} />
+					<Main />
 				</Route>
 				<Route path='/'>
 					{/* 서브페이지 전용 헤더 */}
