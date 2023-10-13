@@ -8,6 +8,7 @@ import Members from './components/sub/members/Members';
 import Gallery from './components/sub/gallery/Gallery';
 import Detail from './components/sub/youtube/Detail';
 import Contact from './components/sub/contact/Contact';
+import Community from './components/sub/community/Community';
 
 function App() {
 	return (
@@ -23,6 +24,7 @@ function App() {
 					<Header isMain={false} />
 				</Route>
 			</Switch>
+			<Route path='/Community' component={Community} />
 			<Route path='/department' component={Department} />
 			<Route path='/gallery' component={Gallery} />
 			<Route path='/youtube' component={Youtube} />
