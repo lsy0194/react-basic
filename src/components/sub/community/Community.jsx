@@ -25,6 +25,16 @@ export default function Community() {
 		//기존 Posts배열을 반복 돌면서 인수로 전달된 삭제 순번값과 현재 반복되는 배열의 순번값이 같지 않은 것만 리턴
 		setPosts(Posts.filter((_, idx) => delIndex !== idx));
 	};
+	const enableUpdate = (editIndex) => {
+		setPosts(
+			//Posts 배열값을 반복돌면서 인스로 전달된 수정할 포스트 순법값과 현재배열의 포스트 값이 일치하면
+			//해당 글을 수정처리해야함으로
+			Posts.map((post, idx) => {
+				if (editIndex === idx) post.enableUpdate = true;
+				return post;
+			})
+		);
+	};
 	return (
 		<Layout title={'Community'}>
 			<div className='inputBox'>
@@ -40,18 +50,46 @@ export default function Community() {
 
 			<div className='showBox'>
 				{Posts.map((post, idx) => {
-					return (
-						<article key={idx}>
-							<div className='txt'>
-								<h2>{post.title}</h2>
-								<p>{post.content}</p>
-							</div>
-							<nav className='btnSet'>
-								<button>Edit</button>
-								<button onClick={() => deletePost(idx)}>Delete</button>
-							</nav>
-						</article>
-					);
+					if (post.enableUpdate) {
+						return (
+							<article key={idx}>
+								<div className='txt'>
+									<input
+										type='text'
+										value={post.title}
+										onChange={(e) => {
+											console.log(e.target.value);
+										}}
+									/>
+									<textarea
+										//react에서 value속성을 적용하려면 무조건 onChange이벤트 연결 필수
+										//onChange이벤트 연결하지 않을때에는 value가닌 defaultValue속성 적용
+										value={post.content}
+										onChange={(e) => {
+											console.log(e.target.value);
+										}}
+									></textarea>
+								</div>
+								<nav className='btnSet'>
+									<button>Cancel</button>
+									<button>Update</button>
+								</nav>
+							</article>
+						);
+					} else {
+						return (
+							<article key={idx}>
+								<div className='txt'>
+									<h2>{post.title}</h2>
+									<p>{post.content}</p>
+								</div>
+								<nav className='btnSet'>
+									<button onClick={() => enableUpdate(idx)}>Edit</button>
+									<button onClick={() => deletePost(idx)}>Delete</button>
+								</nav>
+							</article>
+						);
+					}
 				})}
 			</div>
 		</Layout>
