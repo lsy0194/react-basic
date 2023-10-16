@@ -27,6 +27,18 @@ html {
 	}
 }
 
+table {
+	border-collapse: collapse;
+}
+fieldset {
+	border: none;
+}
+.h {
+	position: absolute;
+	top: -9999;
+	opacity: 0;
+}
+
 :root {
 	--tablet: 1199px;
 }
