@@ -14,12 +14,12 @@
 				text-align: left;
 				&:last-child {
 					text-align: center;
-					input[type='text'],
-					input[type='password'] {
+					input[type='submit'],
+					input[type='reset'] {
 						border: 1px solid #aaa;
 						width: 150px;
 						height: 30px;
-						display: inline-block;
+						display: inline-flex;
 						justify-content: center;
 						align-items: center;
 						margin: 0px 10px;
@@ -39,6 +39,11 @@
 					border: 1px solid #aaa;
 					padding: 6px 10px;
 					background: #f3ffff;
+				}
+				p {
+					font: 0.8rem/1.2 '돋움';
+					color: hotpink;
+					margin-top: 5px;
 				}
 			}
 		}
