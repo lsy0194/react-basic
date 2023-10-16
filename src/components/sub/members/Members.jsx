@@ -1,3 +1,4 @@
+import { init } from '@emailjs/browser';
 import Layout from '../../common/layout/Layout';
 import './Members.scss';
 import { useState } from 'react';
@@ -98,6 +99,11 @@ export default function Members() {
 		} else {
 			setErrs(check(Val));
 		}
+	};
+
+	const resetFrom = (e) => {
+		e.preventDefault();
+		setVal(initVal);
 	};
 
 	return (
@@ -240,7 +246,7 @@ export default function Members() {
 							{/* btnSet */}
 							<tr>
 								<th colSpan='2'>
-									<input type='reset' value='cancel' />
+									<input type='reset' value='cancel' onClick={resetFrom} />
 									<input type='submit' value='send' />
 								</th>
 							</tr>
