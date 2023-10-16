@@ -7,6 +7,8 @@ export default function Members() {
 		pwd1: '',
 		pwd2: '',
 		email: '',
+		gender: false,
+		interests: false,
 	};
 	const [Val, setVal] = useState(initVal);
 	const [Errs, setErrs] = useState({});
@@ -21,6 +23,14 @@ export default function Members() {
 	const handleRadio = (e) => {
 		const { name, checked } = e.target;
 		setVal({ ...Val, [name]: checked });
+	};
+
+	const handleCheck = (e) => {
+		const { name } = e.target;
+		let isChecked = false;
+		const inputs = e.target.parentElement.querySelectorAll('input');
+		inputs.forEach((input) => input.checked && (isChecked = true));
+		setVal({ ...Val, [name]: isChecked });
 	};
 
 	const check = (value) => {
@@ -63,7 +73,11 @@ export default function Members() {
 
 		//성별인증
 		if (!value.gender) {
-			alert('성별을 하나이상 체크해주세요.');
+			errs.gender = '성별은 필수체크 항목입니다. ';
+		}
+
+		if (!value.interests) {
+			errs.interests = '취미를 하나이상 체크해주세요.';
 		}
 		return errs;
 	};
@@ -162,6 +176,23 @@ export default function Members() {
 									<label htmlFor='male'>male</label>
 									<input type='radio' name='gender' id='male' onChange={handleRadio} />
 									{Errs.gender && <p>{Errs.gender}</p>}
+								</td>
+							</tr>
+
+							{/* interests */}
+							<tr>
+								<th>interests</th>
+								<td>
+									<label htmlFor='sports'>sports</label>
+									<input type='checkbox' id='sports' name='interests' onChange={handleCheck} />
+
+									<label htmlFor='game'>game</label>
+									<input type='checkbox' id='game' name='interests' onChange={handleCheck} />
+
+									<label htmlFor='music'>music</label>
+									<input type='checkbox' id='music' name='interests' onChange={handleCheck} />
+
+									{Errs.interests && <p>{Errs.interests}</p>}
 								</td>
 							</tr>
 							{/* btnSet */}
