@@ -1,7 +1,6 @@
-import { init } from '@emailjs/browser';
 import Layout from '../../common/layout/Layout';
 import './Members.scss';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 export default function Members() {
 	const initVal = {
 		userid: '',
@@ -12,6 +11,8 @@ export default function Members() {
 		interests: false,
 		comments: '',
 	};
+	const refCheckGroup = useRef(null);
+	const refRadioGroup = useRef(null);
 	const [Val, setVal] = useState(initVal);
 	const [Errs, setErrs] = useState({});
 
@@ -104,6 +105,13 @@ export default function Members() {
 	const resetFrom = (e) => {
 		e.preventDefault();
 		setVal(initVal);
+		// const checks = refCheckGroup.current.querySelectorAll('input');
+		// const radios = refRadioGroup.current.querySelectorAll('input');
+		// checks.forEach((input) => (input.checked = false));
+		// radios.forEach((input) => (input.checked = false));
+		[refCheckGroup, refRadioGroup].forEach((el) => {
+			el.current.querySelectorAll('input').forEach((input) => (input.checked = false));
+		});
 	};
 
 	return (
@@ -184,7 +192,7 @@ export default function Members() {
 							{/* gender */}
 							<tr>
 								<th>gender</th>
-								<td>
+								<td ref={refRadioGroup}>
 									<label htmlFor='female'>female</label>
 									<input type='radio' name='gender' id='female' onChange={handleRadio} />
 
@@ -197,7 +205,7 @@ export default function Members() {
 							{/* interests */}
 							<tr>
 								<th>interests</th>
-								<td>
+								<td ref={refCheckGroup}>
 									<label htmlFor='sports'>sports</label>
 									<input type='checkbox' id='sports' name='interests' onChange={handleCheck} />
 
