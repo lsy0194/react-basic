@@ -1,23 +1,22 @@
-import { useState } from 'react';
 import Layout from '../../common/layout/Layout';
 import './Members.scss';
-
+import { useState } from 'react';
 export default function Members() {
 	const initVal = {
 		userid: '',
-		pw1: '',
-		pw2: '',
+		pwd1: '',
+		pwd2: '',
 		email: '',
 	};
-
 	const [Val, setVal] = useState(initVal);
+	const [Errs, setErrs] = useState({});
+
+	console.log(Errs);
 
 	const handleChange = (e) => {
 		const { name, value } = e.target;
-		//현재 onChange이벤트가 발생하고 있는 form요소의 name값을 객체안에서 변수로 가져오고 value값도 가져온뒤 기존의 state값을 deep copy한뒤 내가 입력하고 있는 input의 property값만 덮어쓰기
 		setVal({ ...Val, [name]: value });
 	};
-
 	//인수값으로 state를 전달받아서 각 데이터별로 인증처리후
 	//만약 인증에러가 발생하면 해당 name값으로 에러문구를 생성해서 반환하는 함수
 	const check = (value) => {
@@ -39,33 +38,38 @@ export default function Members() {
 		}
 
 		//비밀번호 재확인 인증
-		if (value.pwd1 !== value.pwd2) {
+		if (value.pwd1 !== value.pwd2 || !value.pwd2) {
 			errs.pwd2 = '2개의 비밀번호를 같게 입력하세요.';
 		}
 
 		//이메일 인증
-
 		if (!value.email || !/@/.test(value.email)) {
 			errs.email = '이메일은 무조건 @를 포함해야 합니다.';
 		} else {
-			if (!value.email.split('@')[0] || !value.email.split('@')[1]) {
+			const [forward, backward] = value.email.split('@');
+			if (!forward || !backward) {
 				errs.email = '이메일에 @앞뒤로 문자값이 있어야 합니다.';
 			} else {
-				if (!value.email.split('@')[1].split('.')[0] || !value.email.split('@')[1].split('.')[1]) {
+				const [forward, backward] = value.email.split('.');
+				if (!forward || !backward) {
 					errs.email = '이메일 . 앞뒤로 문자값이 있어야 합니다.';
 				}
 			}
 		}
 		return errs;
 	};
-
 	//전송이벤트 발생시 state에 있는 인풋값들을 check함수에 전달해서 호출
 	//만약 check함수가 에러객체를 하나도 내보내지 않으면 인증성공
 	//하나라도 에러객체가 전달되면 인증실패처리하면서 name값과 매칭이 되는 input요소 아래쪽에 에러메세지 출력
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		console.log(check(Val));
+		if (Object.keys(check(Val)).length === 0) {
+			alert('인증통과');
+		} else {
+			setErrs(check(Val));
+		}
 	};
+
 	return (
 		<Layout title={'Members'}>
 			<form onSubmit={handleSubmit}>
@@ -86,38 +90,44 @@ export default function Members() {
 										value={Val.userid}
 										onChange={handleChange}
 									/>
+									{Errs.userid && <p>{Errs.userid}</p>}
 								</td>
 							</tr>
+
 							{/* password */}
 							<tr>
 								<th scope='row'>
-									<label htmlFor='pw1'>password</label>
+									<label htmlFor='pwd1'>password</label>
 								</th>
 								<td>
 									<input
 										type='password'
-										id='pw1'
-										name='pw1'
-										value={Val.pw1}
+										id='pwd1'
+										name='pwd1'
+										value={Val.pwd1}
 										onChange={handleChange}
 									/>
+									{Errs.pwd1 && <p>{Errs.pwd1}</p>}
 								</td>
 							</tr>
+
 							{/* re password */}
 							<tr>
 								<th scope='row'>
-									<label htmlFor='pw2'>re password</label>
+									<label htmlFor='pwd2'>re-password</label>
 								</th>
 								<td>
 									<input
 										type='password'
-										id='pw2'
-										name='pw2'
-										value={Val.pw2}
+										id='pwd2'
+										name='pwd2'
+										value={Val.pwd2}
 										onChange={handleChange}
 									/>
+									{Errs.pwd2 && <p>{Errs.pwd2}</p>}
 								</td>
 							</tr>
+
 							{/* email */}
 							<tr>
 								<th scope='row'>
@@ -131,8 +141,10 @@ export default function Members() {
 										value={Val.email}
 										onChange={handleChange}
 									/>
+									{Errs.email && <p>{Errs.email}</p>}
 								</td>
 							</tr>
+
 							{/* btnSet */}
 							<tr>
 								<th colSpan='2'>
