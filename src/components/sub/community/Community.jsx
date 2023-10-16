@@ -155,16 +155,3 @@ export default function Community() {
 		</Layout>
 	);
 }
-/*
-  Create : 게시글 저장
-  Read : 게시글 보기
-  Update : 게시글 수정
-  Delete : 게시글 삭제
-  localStorage : 모든 브라우저가 가지고 있는 경량의 저장소 (문자열: 5MB)
-  로컬저장소에 데이터 저장
-  localStorage.setItem({key: 'value'}); 
-  객체를 문자화시켜서 저장
-  로컬저장소에 데이터 가져옴
-  localStorage.getItem(key)
-  문자화되어있는 객체를 다시 parsing해서 호출
-*/
