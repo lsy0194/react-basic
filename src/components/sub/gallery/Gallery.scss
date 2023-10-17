@@ -1,11 +1,10 @@
-@import '../../../styles/Variable.scss';
-
 .Gallery {
 	.picFrame {
 		width: 100%;
+
 		&::after {
 			content: '';
-			display: none;
+			display: block;
 			clear: both;
 		}
 
@@ -13,12 +12,14 @@
 			width: 25%;
 			padding: 10px;
 			float: left;
+
 			.inner {
 				width: 100%;
 				padding: 10px;
 				background: #fff;
+				box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.05);
 
-				img {
+				.pic {
 					width: 100%;
 				}
 				h2 {
@@ -32,6 +33,7 @@
 					display: flex;
 					align-items: center;
 					gap: 20px;
+
 					span {
 						font-size: 0.8rem;
 					}

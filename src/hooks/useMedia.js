@@ -1,19 +1,20 @@
-import { useEffect, useRef } from 'react';
-export const useMeida = () => {
-	const device = useRef('');
+import { useEffect, useState } from 'react';
+
+export const useMedia = (mobile = 640, tablet = 1000, laptop = 1400) => {
+	const [Type, setType] = useState('');
+
 	const getClientWid = () => {
 		let wid = window.innerWidth;
-		if (wid >= 1000 && wid < 1400) device.current = 'laptop';
-		if (wid >= 640 && wid < 1000) device.current = 'tablet';
-		if (wid >= 0 && wid < 639) device.current = 'mobile';
-
-		//console.log(device.current);
+		if (wid >= tablet && wid < laptop) setType('laptop');
+		if (wid >= mobile && wid < tablet) setType('tablet');
+		if (wid >= 0 && wid < mobile) setType('mobile');
 	};
 
 	useEffect(() => {
-		window.addEventListener('resize', () => {
-			getClientWid();
-		});
+		getClientWid();
+		window.addEventListener('resize', getClientWid);
+
+		return () => window.removeEventListener('resize', getClientWid);
 	}, []);
-	return device.current;
+	return Type;
 };
