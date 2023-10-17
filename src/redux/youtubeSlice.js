@@ -12,6 +12,36 @@ export const fetchYoutube = createAsyncThunk('youtube/request', async () => {
 	const result = await axios.get(resultURL);
 	return result.data.items;
 });
+//{type:'대기'}
+//{type:'성공': payload:[데이터]}
+//{type:'실패': payload:에러객체}
+
+//createAsyncThunk가 반환하는 action객체를 받아서 전역스토어 데이터를 변형하는 reducer함수등록
+
+//3
+const youtubeSlice = createSlice({
+	name: 'youtube',
+	initialState: {
+		data: [],
+		isLoading: false,
+	},
+	extraReducers: {
+		[fetchYoutube.pending]: (state) => {
+			state.isLoading = true;
+		},
+		[fetchYoutube.fulfilled]: (state, action) => {
+			state.isLoading = false;
+			state.data = action.payload;
+		},
+		[fetchYoutube.rejected]: (state, action) => {
+			state.isLoading = false;
+			state.data = action.payload;
+		},
+	},
+});
+
+export default youtubeSlice.reducer;
+
 //리덕스에서 전역상태 관리에 쓰이는 용어정리
 /*
   store : 전역 state 저장공간 (은행금고)
@@ -19,6 +49,7 @@ export const fetchYoutube = createAsyncThunk('youtube/request', async () => {
   dispatch : reducer에 데이터 변경요청을 해주는 함수 (전달자) (창구직원)
   action : dispatch로 리듀서에 데이터 변경요청을 위해 필요한 특별한 형태의 객체 (창구직원에게 전달하기 위한 지로용지)
   action객체의 구조 : {type, payload}
+
   1-컴포넌트에서 데이터변경이나 데이터요청을 위한 action객체를 만들어서 dispatch함수에 전달
   2-dispatch는 action객체를 가지고 리듀서 함수에 전달
   3-reducer함수는 dispatch가 전달되는 action객체의 타입에 따라 store의 데이터 변경처리
