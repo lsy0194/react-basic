@@ -9,7 +9,9 @@
 		//color: #333;
 		color: var(--color1);
 	}
-
+	.bars {
+		display: none;
+	}
 	ul {
 		display: flex;
 		gap: 4vw;
@@ -41,6 +43,9 @@
 	.header {
 		ul {
 			display: none;
+		}
+		.bars {
+			display: block;
 		}
 	}
 }

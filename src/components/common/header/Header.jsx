@@ -1,6 +1,6 @@
 import { Link, NavLink } from 'react-router-dom';
 import './Header.scss';
-
+import { BsList } from 'react-icons/bs';
 export default function Header({ isMain }) {
 	return (
 		<header className='header'>
@@ -40,6 +40,8 @@ export default function Header({ isMain }) {
 					</NavLink>
 				</li>
 			</ul>
+
+			<BsList font-size={30} color={'#333'} className='bars' />
 		</header>
 	);
 }

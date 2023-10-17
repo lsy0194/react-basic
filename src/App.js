@@ -31,7 +31,7 @@ function App() {
 			<Route path='/members' component={Members} />
 			<Route path='/contact' component={Contact} />
 			<Route path='/community' component={Community} />
-			<Route path='/detail/:id' component={Detail} />
+			<Route path='/detail' component={Detail} />
 		</main>
 	);
 }
