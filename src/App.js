@@ -10,14 +10,17 @@ import Contact from './components/sub/contact/Contact';
 import Detail from './components/sub/youtube/Detail';
 import Community from './components/sub/community/Community';
 import Main from './components/main/mainwarp/Main';
+import Menu from './components/common/menu/Menu';
+
 import { useMedia } from './hooks/useMedia';
 import { useEffect } from 'react';
 import { fetchYoutube } from './redux/youtubeSlice';
 import { fetchFlickr } from './redux/flickrSlice';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 function App() {
 	const dispatch = useDispatch();
+	const isOpen = useSelector((store) => store.menu);
 
 	useEffect(() => {
 		dispatch(fetchYoutube());
@@ -42,6 +45,7 @@ function App() {
 			<Route path='/contact' component={Contact} />
 			<Route path='/community' component={Community} />
 			<Route path='/detail/:id' component={Detail} />
+			{isOpen && <Menu />}
 		</main>
 	);
 }

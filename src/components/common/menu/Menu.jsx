@@ -1,13 +1,9 @@
+import './Menu.scss';
 import { Link, NavLink } from 'react-router-dom';
-import './Header.scss';
-import { BsList } from 'react-icons/bs';
-import { toggle } from '../../../redux/menuSlice';
-import { useDispatch } from 'react-redux';
 
-export default function Header({ isMain }) {
-	const dispatch = useDispatch();
+function Menu() {
 	return (
-		<header className='header'>
+		<aside className='menu'>
 			<h1>
 				<Link to='/'>LOGO</Link>
 			</h1>
@@ -44,8 +40,7 @@ export default function Header({ isMain }) {
 					</NavLink>
 				</li>
 			</ul>
-
-			<BsList className='bars' fontSize={22} color={'#333'} onClick={() => dispatch(toggle())} />
-		</header>
+		</aside>
 	);
 }
+export default Menu;
