@@ -24,6 +24,7 @@ export default function Community() {
 			data: new Date(),
 		},
 	];
+
 	const getLocalData = () => {
 		const data = localStorage.getItem('post');
 		if (data) return JSON.parse(data);

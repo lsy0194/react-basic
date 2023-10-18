@@ -1,5 +1,5 @@
 import './News.scss';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 function News() {
 	const dummyData = [
 		{
@@ -23,18 +23,19 @@ function News() {
 			data: new Date(),
 		},
 	];
+
 	const getLocalDate = () => {
 		const data = localStorage.getItem('post');
 		if (data) return JSON.parse(data);
 		else return dummyData;
 	};
-	const [Post, setPost] = useState(getLocalData());
+	const [Post, setPost] = useState(getLocalDate());
 
 	useEffect(() => {
-		console.log(getLocalData());
-		setPost(getLocalData());
+		console.log(getLocalDate());
+		setPost(getLocalDate());
 	}, []);
-	const [Post] = useState(getLocalDate);
+
 	return (
 		<section className='news'>
 			<h2>News</h2>
