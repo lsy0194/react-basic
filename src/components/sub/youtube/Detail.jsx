@@ -6,6 +6,7 @@ function Detail() {
 	//url로 전단될 parameter값을 비구조화할당으로 받을 수 있음
 	const { id } = useParams();
 	const [Data, setData] = useState(null);
+
 	useEffect(() => {
 		const api_key = process.env.REACT_APP_YOUTUBE_API;
 		const baseURL = 'https://www.googleapis.com/youtube/v3/playlistItems';
@@ -18,6 +19,7 @@ function Detail() {
 				setData(json.items[0].snippet);
 			});
 	}, []);
+
 	return (
 		<Layout title={'Detail'}>
 			<h2>{Data?.title}</h2>

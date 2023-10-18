@@ -18,7 +18,6 @@ export const fetchFlickr = createAsyncThunk('flickr/request', async (opt) => {
 	if (opt.type === 'search') {
 		url = `https://www.flickr.com/services/rest/?method=${method_search}&api_key=${api_key}&per_page=${num}&nojsoncallback=1&format=json&tags=${opt.tags}`;
 	}
-
 	const result = await axios.get(url);
 	return result.data.photos.photo;
 });
@@ -43,8 +42,5 @@ const flickrSlice = createSlice({
 		},
 	},
 });
+
 export default flickrSlice.reducer;
-/*
-  redux 시스템은 컴포넌트 외부에서 독립적으로 동작되야하기 때문에
-  부수효과(Side effect)를 발생시키지 않는 순수함수(Pure function) 형태로 작성되야함
-*/

@@ -1,30 +1,34 @@
-import { useSelector, useDispatch } from 'react-redux';
 import Layout from '../../common/layout/Layout';
 import Modal from '../../common/modal/Modal';
 import './Gallery.scss';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useRef } from 'react';
 import Masonry from 'react-masonry-component';
+import { useSelector, useDispatch } from 'react-redux';
 import { fetchFlickr } from '../../../redux/flickrSlice';
+import { open } from '../../../redux/modalSlice';
 
 export default function Gallery() {
 	const dispatch = useDispatch();
 	const Pics = useSelector((store) => store.flickr.data);
+	const IsModal = useSelector((store) => store.modal.isOpen);
 	const refInput = useRef(null);
 	const refBtnSet = useRef(null);
 	const [ActiveURL, setActiveURL] = useState('');
 	const [IsUser, setIsUser] = useState(true);
-	const [IsModal, setIsModal] = useState(false);
 	const my_id = '164021883@N04';
 
 	//submit이벤트 발생시 실행할 함수
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		setIsUser(false);
+
 		const btns = refBtnSet.current.querySelectorAll('button');
 		btns.forEach((btn) => btn.classList.remove('on'));
+
 		if (refInput.current.value.trim() === '') {
 			return alert('검색어를 입력하세요.');
 		}
+
 		dispatch(fetchFlickr({ type: 'search', tags: refInput.current.value }));
 		refInput.current.value = '';
 	};
@@ -33,9 +37,11 @@ export default function Gallery() {
 	const handleClickMy = (e) => {
 		setIsUser(true);
 		if (e.target.classList.contains('on')) return;
+
 		const btns = refBtnSet.current.querySelectorAll('button');
 		btns.forEach((btn) => btn.classList.remove('on'));
 		e.target.classList.add('on');
+
 		dispatch(fetchFlickr({ type: 'user', id: my_id }));
 	};
 
@@ -43,9 +49,11 @@ export default function Gallery() {
 	const handleClickInterest = (e) => {
 		setIsUser(false);
 		if (e.target.classList.contains('on')) return;
+
 		const btns = refBtnSet.current.querySelectorAll('button');
 		btns.forEach((btn) => btn.classList.remove('on'));
 		e.target.classList.add('on');
+
 		dispatch(fetchFlickr({ type: 'interest' }));
 	};
 
@@ -55,10 +63,6 @@ export default function Gallery() {
 		dispatch(fetchFlickr({ type: 'user', id: e.target.innerText }));
 		setIsUser(true);
 	};
-
-	useEffect(() => {
-		dispatch(fetchFlickr({ type: 'user', id: my_id }));
-	}, []);
 
 	return (
 		<>
@@ -93,7 +97,7 @@ export default function Gallery() {
 											alt={`https://live.staticflickr.com/${data.server}/${data.id}_${data.secret}_b.jpg`}
 											onClick={(e) => {
 												setActiveURL(e.target.getAttribute('alt'));
-												setIsModal(true);
+												dispatch(open());
 											}}
 										/>
 										<h2>{data.title}</h2>
@@ -118,7 +122,7 @@ export default function Gallery() {
 				</div>
 			</Layout>
 			{IsModal && (
-				<Modal setIsModal={setIsModal}>
+				<Modal>
 					<img src={ActiveURL} alt='img' />
 				</Modal>
 			)}
