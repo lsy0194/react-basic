@@ -38,14 +38,15 @@ export default function Members() {
 	};
 
 	const check = (value) => {
-		const num = /[0-9]/; //0-9까지의 모든 값을 정규표현식으로 범위지정
-		const txt = /[a-zA-Z]/; //대소문자 구분없이 모든 문자 범위지정
-		const spc = /[!@#$%^*()_]/; //모든 특수문자 지정
+		const num = /[0-9]/;
+		const txt = /[a-zA-Z]/;
+		const spc = /[!@#$%^*()_]/;
 		const errs = {};
+
 		if (value.userid.length < 5) {
 			errs.userid = '아이디는 최소 5글자 이상 입력하세요.';
 		}
-		//비밀번호 인증 (5글자 이상, 문자, 숫자, 특수문자 모두 포함)
+
 		if (
 			value.pwd1.length < 5 ||
 			!num.test(value.pwd1) ||
@@ -55,12 +56,10 @@ export default function Members() {
 			errs.pwd1 = '비밀번호는 5글자이상, 문자,숫자,특수문자를 모두 포함하세요';
 		}
 
-		//비밀번호 재확인 인증
 		if (value.pwd1 !== value.pwd2 || !value.pwd2) {
 			errs.pwd2 = '2개의 비밀번호를 같게 입력하세요.';
 		}
 
-		//이메일 인증
 		if (!value.email || !/@/.test(value.email)) {
 			errs.email = '이메일은 무조건 @를 포함해야 합니다.';
 		} else {
@@ -75,19 +74,18 @@ export default function Members() {
 			}
 		}
 
-		//성별인증
 		if (!value.gender) {
 			errs.gender = '성별은 필수체크 항목입니다. ';
 		}
-		//관심사 인증
+
 		if (!value.interests) {
 			errs.interests = '취미를 하나이상 체크해주세요.';
 		}
-		//학력인증
+
 		if (!value.edu) {
 			errs.edu = '학력을 선택하세요';
 		}
-		//남기는말
+
 		if (value.comments.length < 10) {
 			errs.comments = '남기는 말은 10글자 이상입력해주세요';
 		}
@@ -106,10 +104,7 @@ export default function Members() {
 	const resetFrom = (e) => {
 		e.preventDefault();
 		setVal(initVal);
-		// const checks = refCheckGroup.current.querySelectorAll('input');
-		// const radios = refRadioGroup.current.querySelectorAll('input');
-		// checks.forEach((input) => (input.checked = false));
-		// radios.forEach((input) => (input.checked = false));
+
 		[refCheckGroup, refRadioGroup].forEach((el) => {
 			el.current.querySelectorAll('input').forEach((input) => (input.checked = false));
 		});
@@ -123,7 +118,6 @@ export default function Members() {
 					<legend className='h'>회원가입 폼 양식</legend>
 					<table border='1'>
 						<tbody>
-							{/* userid */}
 							<tr>
 								<th scope='row'>
 									<label htmlFor='userid'>UserID</label>
@@ -141,7 +135,6 @@ export default function Members() {
 								</td>
 							</tr>
 
-							{/* password */}
 							<tr>
 								<th scope='row'>
 									<label htmlFor='pwd1'>Password</label>
@@ -159,7 +152,6 @@ export default function Members() {
 								</td>
 							</tr>
 
-							{/* re password */}
 							<tr>
 								<th scope='row'>
 									<label htmlFor='pwd2'>Re-Password</label>
@@ -177,7 +169,6 @@ export default function Members() {
 								</td>
 							</tr>
 
-							{/* email */}
 							<tr>
 								<th scope='row'>
 									<label htmlFor='email'>E-Mail</label>
@@ -195,7 +186,6 @@ export default function Members() {
 								</td>
 							</tr>
 
-							{/* gender */}
 							<tr>
 								<th>Gender</th>
 								<td ref={refRadioGroup}>
@@ -208,7 +198,6 @@ export default function Members() {
 								</td>
 							</tr>
 
-							{/* interests */}
 							<tr>
 								<th>Interests</th>
 								<td ref={refCheckGroup}>
@@ -224,7 +213,7 @@ export default function Members() {
 									{Errs.interests && <p>{Errs.interests}</p>}
 								</td>
 							</tr>
-							{/* education */}
+
 							<tr>
 								<th>
 									<label htmlFor='edu'>Education</label>
@@ -240,7 +229,7 @@ export default function Members() {
 									{Errs.edu && <p>{Errs.edu}</p>}
 								</td>
 							</tr>
-							{/* comments */}
+
 							<tr>
 								<th>
 									<label htmlFor='comments'>Comments</label>
@@ -258,7 +247,7 @@ export default function Members() {
 									{Errs.comments && <p>{Errs.comments}</p>}
 								</td>
 							</tr>
-							{/* btnSet */}
+
 							<tr>
 								<th colSpan='2'>
 									<input type='reset' value='cancel' onClick={resetFrom} />
